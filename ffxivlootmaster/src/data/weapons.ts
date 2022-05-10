@@ -1,6 +1,6 @@
 type weaponType = {
   test: string;
-  what?: string;
+  what: string;
 };
 
 export const weapons: weaponType[] = [
