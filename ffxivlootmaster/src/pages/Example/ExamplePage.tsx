@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Button/Button";
-import { weapons } from "../../data/weapons";
+import { weapons } from "../../data/gear";
 
 export const ExamplePage: React.FunctionComponent = () => {
   const [exampleText, setExampleText] = useState("hallo dude");
@@ -14,7 +14,7 @@ export const ExamplePage: React.FunctionComponent = () => {
   return (
     <>
       {weapons.map((weapon) => (
-        <li>{weapon.test}</li>
+        <li>{weapon.name}</li>
       ))}
       <Button text={exampleText} onClick={handleButtonClick} />
     </>
