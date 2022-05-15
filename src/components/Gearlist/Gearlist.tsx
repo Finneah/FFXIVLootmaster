@@ -26,6 +26,9 @@ export const Gearlist = () => {
 
   /** HOOKS */
   //reagiert wenn komponente geladen wird oder selectedRaidMember sich ändert
+  useEffect(() => {
+    setIsVisible(true);
+  }, [selectedRaidMember]);
 
   /** HANDLER*/
   const resetSelectedAndClosePopUp = () => {
@@ -94,6 +97,11 @@ export const Gearlist = () => {
                 });
                 setRaidMembers(findRaidMembers);
                 resetSelectedAndClosePopUp();
+
+                // BEISPIEL LOCAL STORAGE
+                // localStorage.setItem(data.name, JSON.stringify(data));
+                // const textFromStorage = localStorage.getItem("Spencer");
+                // console.log(textFromStorage, JSON.parse(textFromStorage || ""));
               }
             }} // function auslagern wie close PopUp
           />
