@@ -1,25 +1,31 @@
 import { RaidMember } from "../../types/User";
+import "./RaidMemberGearPopUp.css";
 
-
-type PopUpProps={
-raidMember:RaidMember,
-onClose:()=>void,
-onSave:()=>void
-}
+type PopUpProps = {
+  raidMember: RaidMember;
+  onClose: () => void;
+  onSave: () => void;
+};
 
 // TODO zu styled components
-export const RaidMemberGearPopUp=({raidMember,onClose,onSave}:PopUpProps)=>{
+export const RaidMemberGearPopUp = ({
+  raidMember,
+  onClose,
+  onSave,
+}: PopUpProps) => {
   /**
    * Name
-   * 
+   *
    */
+  console.log("raidmember", raidMember);
+
   return (
-      <div className='popup'>
-        <div className='popup_inner'>
-          <h1>{raidMember.name}</h1>
+    <div className="popup">
+      <div className="popup_inner">
         <button onClick={onClose}>Abbrechen</button>
         <button onClick={onSave}>Speichern</button>
-        </div>
+        <h1>{raidMember.name}</h1>
       </div>
-    );
-}
+    </div>
+  );
+};

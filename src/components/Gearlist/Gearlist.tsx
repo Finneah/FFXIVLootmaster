@@ -1,9 +1,10 @@
-
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import { raidMember as defaultRaidMember } from "../../data/raidMember";
 import { Slots } from "../../types/Gear";
-import styled from 'styled-components'
+import styled from "styled-components";
 import { RaidMember } from "../../types/User";
+import { Button } from "../Button/Button";
+import { RaidMemberGearPopUp } from "../RaidMemberGearPopUp/RaidMemberGearPopUp";
 
 export const Gearlist = () => {
   // const classJobs: (ClassJob | undefined)[] = useSelector(
@@ -31,12 +32,30 @@ export const Gearlist = () => {
 
   const [raidMembers, setRaidMember] =
     useState<RaidMember[]>(defaultRaidMember);
-// Name Header soll ein Click event werden 
-// Es soll sich ein PopUp öffnen indem die Auswahl an Gear eingetragen wird
-// Mit einem Button "speichern" werden die Daten in die Tabele eingetragen
-// TODO specihern im Localstorage
 
-// TODO Table in Component Auslagern
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [selectedRaidMember, setSelectedRaidMember] = useState<RaidMember>();
+
+  const onSelectRaidMember = (raidMember: RaidMember) => {
+    // setze ausgewählten raidmember
+    setSelectedRaidMember(raidMember);
+    // raidmember gesetzt? öffne popup
+  };
+
+  //reagiert wenn komponente geladen wird oder selectedRaidMember sich ändert
+  useEffect(() => {
+    setIsVisible(true);
+  }, [selectedRaidMember]);
+  const closePopUp = () => {
+    setIsVisible(false);
+  };
+  // Name Header soll ein Click event werden
+  // Es soll sich ein PopUp öffnen indem die Auswahl an Gear eingetragen wird
+  // Mit einem Button "speichern" werden die Daten in die Tabele eingetragen
+  // TODO specihern im Localstorage
+
+  // TODO Table in Component Auslagern
 
   return (
     <TableWrapper>
@@ -51,7 +70,14 @@ export const Gearlist = () => {
       {raidMembers.map((raidMember, key) => (
         <TableCol>
           <TableData>
-            <Text>{raidMember.name}</Text>
+            <Button
+              text={raidMember.name}
+              onClick={(raidMember: RaidMember) => {
+                console.log(raidMember);
+
+                onSelectRaidMember(raidMember);
+              }}
+            />
           </TableData>
           <TableData>
             <Text>{raidMember.role}</Text>
@@ -66,6 +92,14 @@ export const Gearlist = () => {
           ))}
         </TableCol>
       ))}
+
+      {isVisible && selectedRaidMember && (
+        <RaidMemberGearPopUp
+          raidMember={selectedRaidMember}
+          onClose={closePopUp}
+          onSave={() => {}}
+        />
+      )}
     </TableWrapper>
   );
 };
