@@ -1,4 +1,5 @@
 import { RaidMember } from "../../types/User";
+import { SelectGearForm } from "../SelectGearForm/SelectGearForm";
 import "./RaidMemberGearPopUp.css";
 
 type PopUpProps = {
@@ -24,6 +25,7 @@ export const RaidMemberGearPopUp = ({
         <button onClick={onClose}>Abbrechen</button>
         <button onClick={onSave}>Speichern</button>
         <h1>{raidMember.name}</h1>
+        <SelectGearForm raidMember={raidMember} onSave={onSave} />
       </div>
     </div>
   );

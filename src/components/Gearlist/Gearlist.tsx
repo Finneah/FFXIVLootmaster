@@ -49,6 +49,7 @@ export const Gearlist = () => {
   }, [selectedRaidMember]);
   const closePopUp = () => {
     setIsVisible(false);
+    setSelectedRaidMember(undefined);
   };
   // Name Header soll ein Click event werden
   // Es soll sich ein PopUp öffnen indem die Auswahl an Gear eingetragen wird
@@ -95,7 +96,9 @@ export const Gearlist = () => {
         <RaidMemberGearPopUp
           raidMember={selectedRaidMember}
           onClose={closePopUp}
-          onSave={() => {}}
+          onSave={() => {
+            console.log("Hurra");
+          }} // function auslagern
         />
       )}
     </TableWrapper>
