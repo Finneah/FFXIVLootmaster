@@ -30,7 +30,7 @@ export const Gearlist = () => {
   //   );
   // };
 
-  const [raidMembers, setRaidMember] =
+  const [raidMembers, setRaidMembers] =
     useState<RaidMember[]>(defaultRaidMember);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -78,9 +78,9 @@ export const Gearlist = () => {
               }}
             />
           </TableData>
-          <TableData>
+          {/* <TableData>
             <Text>{raidMember.role}</Text>
-          </TableData>
+          </TableData> */}
 
           {Object.values(raidMember.equip).map((key, index) => (
             <TableCol key={index.toString()}>
@@ -96,8 +96,19 @@ export const Gearlist = () => {
         <RaidMemberGearPopUp
           raidMember={selectedRaidMember}
           onClose={closePopUp}
-          onSave={() => {
-            console.log("Hurra");
+          onSave={(data: RaidMember) => {
+            const findRaidMembers = [...raidMembers];
+
+            if (findRaidMembers) {
+              findRaidMembers.find((raidMember) => {
+                if (raidMember.name === data.name) {
+                  raidMember = data;
+                }
+                return raidMember.name === data.name;
+              });
+              setRaidMembers(findRaidMembers);
+              closePopUp();
+            }
           }} // function auslagern
         />
       )}

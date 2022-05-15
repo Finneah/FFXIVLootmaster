@@ -5,7 +5,7 @@ import "./RaidMemberGearPopUp.css";
 type PopUpProps = {
   raidMember: RaidMember;
   onClose: () => void;
-  onSave: () => void;
+  onSave: (raidMemberFormData: RaidMember) => void;
 };
 
 // TODO zu styled components
@@ -23,7 +23,7 @@ export const RaidMemberGearPopUp = ({
     <div className="popup">
       <div className="popup_inner">
         <button onClick={onClose}>Abbrechen</button>
-        <button onClick={onSave}>Speichern</button>
+      
         <h1>{raidMember.name}</h1>
         <SelectGearForm raidMember={raidMember} onSave={onSave} />
       </div>

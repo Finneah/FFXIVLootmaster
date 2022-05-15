@@ -1,9 +1,12 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Select from "react-select";
+import styled from "styled-components";
+import { weapons } from "../../data/gear";
 import { RaidMember } from "../../types/User";
 
 type SelectGearFormProps = {
-  onSave: () => void;
+  onSave: (raidMemberFormData: RaidMember) => void;
   raidMember: RaidMember;
 };
 
@@ -12,35 +15,49 @@ export const SelectGearForm = ({
 
   onSave,
 }: SelectGearFormProps) => {
-  const { register, handleSubmit } = useForm();
+  const { register, control, handleSubmit } = useForm();
+
   const onSubmit = (data: any) => {
-    alert(JSON.stringify(data));
-    onSave();
+    const updatedMember = { ...raidMember };
+    updatedMember.equip.waffe.name = data.waffe.value;
+    onSave(updatedMember);
   };
+  const [options, setOptions] = useState<{ value: string; label: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    Object.values(weapons).forEach((weapon) => {
+      options.push({ value: weapon.name, label: weapon.name });
+    });
+  });
 
   return (
     <div className="SelectGearForm">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="firstName">Waffe</label>
-          <input placeholder="bill" {...register("firstName")} />
-        </div>
-
+        <SelectWrapper>
+          <label htmlFor="waffe">Waffe</label>
+          <Controller
+            name="waffe" // Slots.WAFFE
+            control={control}
+            render={({ field }) => (
+              <Select {...field} options={options} isMulti={false} />
+            )}
+          />
+        </SelectWrapper>
+        {/* 
         <div>
           <label htmlFor="lastName">Last Name</label>
           <input placeholder="luo" {...register("lastName")} />
-        </div>
+        </div> */}
 
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            placeholder="bluebill1049@hotmail.com"
-            type="email"
-            {...register("email")}
-          />
-        </div>
-        <button type="submit">Submit</button>
+        <button type="submit">Übernehmen</button>
       </form>
     </div>
   );
 };
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
