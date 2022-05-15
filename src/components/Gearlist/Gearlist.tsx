@@ -1,6 +1,12 @@
 import { constants } from "buffer";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ListGroup } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import Select from "react-select/dist/declarations/src/Select";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { fetchAllJobs } from "../../redux/jobs/jobs.actions";
+import { ClassJob } from "../../redux/jobs/jobs.types";
+import { RootState } from "../../redux/root/root.types";
 import "./Gearlist.css";
 import { WeaponSelect, LeftSideSelect, RightSideSelect } from "./Gearselect";
 
@@ -136,13 +142,33 @@ const rightside = [
   },
 ];
 
-function Table() {
+export const Gearlist = () => {
+  const classJobs: (ClassJob | undefined)[] = useSelector(
+    (state: RootState) => state.jobs.data
+  );
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchAllJobs());
+  }, []);
+
+  const ClassJobList = () => {
+    console.log("classJobs", classJobs);
+    if (!classJobs || classJobs.length === 0) {
+      return null;
+    }
+    return (
+      <ListGroup>
+        {classJobs.map((classJob, key) => (
+          <ListGroup.Item>{classJob?.shortName} </ListGroup.Item>
+        ))}
+      </ListGroup>
+    );
+  };
   return (
     <div className="Table">
+      <ClassJobList />
       <table>
         {header.map((val, key) => {
-          console.log(key);
-
           return (
             <tr>
               <th>{val.gear}</th>
@@ -159,8 +185,6 @@ function Table() {
         })}
 
         {weapon.map((val, key) => {
-          console.log(key);
-
           return (
             <tr>
               <td>{val.gear}</td>
@@ -176,8 +200,6 @@ function Table() {
           );
         })}
         {leftside.map((val, key) => {
-          console.log(key);
-
           return (
             <tr>
               <td>{val.gear}</td>
@@ -193,8 +215,6 @@ function Table() {
           );
         })}
         {rightside.map((val, key) => {
-          console.log(key);
-
           return (
             <tr>
               <td>{val.gear}</td>
@@ -212,6 +232,4 @@ function Table() {
       </table>
     </div>
   );
-}
-
-export default Table;
+};
