@@ -1,234 +1,89 @@
-import { useEffect } from "react";
-import { ListGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import useAppDispatch from "../../hooks/useAppDispatch";
-import { fetchAllJobs } from "../../redux/jobs/jobs.actions";
 
-import { RootState } from "../../redux/root/root.types";
-import { ClassJob } from "../../types/Job";
-import "./Gearlist.css";
-import { WeaponSelect, LeftSideSelect, RightSideSelect } from "./Gearselect";
-
-const header = [
-  {
-    gear: "",
-    mt: "Spencer",
-    ot: "Quacks",
-    h1: "Finneah",
-    h2: "Asgar",
-    d1: "Jaspie",
-    d2: "Yuuna",
-    d3: "Kral",
-    d4: "Nonoka",
-  },
-];
-
-const weapon = [
-  {
-    gear: "Waffe",
-    mt: WeaponSelect(),
-    ot: WeaponSelect(),
-    h1: WeaponSelect(),
-    h2: WeaponSelect(),
-    d1: WeaponSelect(),
-    d2: WeaponSelect(),
-    d3: WeaponSelect(),
-    d4: WeaponSelect(),
-  },
-];
-
-const leftside = [
-  {
-    gear: "Kopf",
-    mt: LeftSideSelect(),
-    ot: LeftSideSelect(),
-    h1: LeftSideSelect(),
-    h2: LeftSideSelect(),
-    d1: LeftSideSelect(),
-    d2: LeftSideSelect(),
-    d3: LeftSideSelect(),
-    d4: LeftSideSelect(),
-  },
-  {
-    gear: "Brust",
-    mt: LeftSideSelect(),
-    ot: LeftSideSelect(),
-    h1: LeftSideSelect(),
-    h2: LeftSideSelect(),
-    d1: LeftSideSelect(),
-    d2: LeftSideSelect(),
-    d3: LeftSideSelect(),
-    d4: LeftSideSelect(),
-  },
-  {
-    gear: "Beine",
-    mt: LeftSideSelect(),
-    ot: LeftSideSelect(),
-    h1: LeftSideSelect(),
-    h2: LeftSideSelect(),
-    d1: LeftSideSelect(),
-    d2: LeftSideSelect(),
-    d3: LeftSideSelect(),
-    d4: LeftSideSelect(),
-  },
-  {
-    gear: "Füße",
-    mt: LeftSideSelect(),
-    ot: LeftSideSelect(),
-    h1: LeftSideSelect(),
-    h2: LeftSideSelect(),
-    d1: LeftSideSelect(),
-    d2: LeftSideSelect(),
-    d3: LeftSideSelect(),
-    d4: LeftSideSelect(),
-  },
-];
-const rightside = [
-  {
-    gear: "Ohrring",
-    mt: RightSideSelect(),
-    ot: RightSideSelect(),
-    h1: RightSideSelect(),
-    h2: RightSideSelect(),
-    d1: RightSideSelect(),
-    d2: RightSideSelect(),
-    d3: RightSideSelect(),
-    d4: RightSideSelect(),
-  },
-  {
-    gear: "Hals",
-    mt: RightSideSelect(),
-    ot: RightSideSelect(),
-    h1: RightSideSelect(),
-    h2: RightSideSelect(),
-    d1: RightSideSelect(),
-    d2: RightSideSelect(),
-    d3: RightSideSelect(),
-    d4: RightSideSelect(),
-  },
-  {
-    gear: "Armschiene",
-    mt: RightSideSelect(),
-    ot: RightSideSelect(),
-    h1: RightSideSelect(),
-    h2: RightSideSelect(),
-    d1: RightSideSelect(),
-    d2: RightSideSelect(),
-    d3: RightSideSelect(),
-    d4: RightSideSelect(),
-  },
-  {
-    gear: "Ring 1",
-    mt: RightSideSelect(),
-    ot: RightSideSelect(),
-    h1: RightSideSelect(),
-    h2: RightSideSelect(),
-    d1: RightSideSelect(),
-    d2: RightSideSelect(),
-    d3: RightSideSelect(),
-    d4: RightSideSelect(),
-  },
-  {
-    gear: "Ring 2",
-    mt: RightSideSelect(),
-    ot: RightSideSelect(),
-    h1: RightSideSelect(),
-    h2: RightSideSelect(),
-    d1: RightSideSelect(),
-    d2: RightSideSelect(),
-    d3: RightSideSelect(),
-    d4: RightSideSelect(),
-  },
-];
+import {  useState } from "react";
+import { raidMember as defaultRaidMember } from "../../data/raidMember";
+import { Slots } from "../../types/Gear";
+import styled from 'styled-components'
+import { RaidMember } from "../../types/User";
 
 export const Gearlist = () => {
-  const classJobs: (ClassJob | undefined)[] = useSelector(
-    (state: RootState) => state.jobs.data
-  );
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchAllJobs());
-  }, []);
+  // const classJobs: (ClassJob | undefined)[] = useSelector(
+  //   (state: RootState) => state.jobs.data
+  // );
 
-  const ClassJobList = () => {
-    console.log("classJobs", classJobs);
-    if (!classJobs || classJobs.length === 0) {
-      return null;
-    }
-    return (
-      <ListGroup>
-        {classJobs.map((classJob, key) => (
-          <ListGroup.Item>{classJob?.shortName} </ListGroup.Item>
-        ))}
-      </ListGroup>
-    );
-  };
+  // const dispatch = useAppDispatch();
+  // useEffect(() => {
+  //   dispatch(fetchAllJobs());
+  // }, []);
+
+  // const ClassJobList = () => {
+  //   console.log("classJobs", classJobs);
+  //   if (!classJobs || classJobs.length === 0) {
+  //     return null;
+  //   }
+  //   return (
+  //     <ListGroup>
+  //       {classJobs.map((classJob, key) => (
+  //         <ListGroup.Item>{classJob?.shortName} </ListGroup.Item>
+  //       ))}
+  //     </ListGroup>
+  //   );
+  // };
+
+  const [raidMembers, setRaidMember] =
+    useState<RaidMember[]>(defaultRaidMember);
+// Name Header soll ein Click event werden 
+// Es soll sich ein PopUp öffnen indem die Auswahl an Gear eingetragen wird
+// Mit einem Button "speichern" werden die Daten in die Tabele eingetragen
+// TODO specihern im Localstorage
+
+// TODO Table in Component Auslagern
+
   return (
-    <div className="Table">
-      <ClassJobList />
-      <table>
-        {header.map((val, key) => {
-          return (
-            <tr>
-              <th>{val.gear}</th>
-              <th>{val.mt}</th>
-              <th>{val.ot}</th>
-              <th>{val.h1}</th>
-              <th>{val.h2}</th>
-              <th>{val.d1}</th>
-              <th>{val.d2}</th>
-              <th>{val.d3}</th>
-              <th>{val.d4}</th>
-            </tr>
-          );
-        })}
+    <TableWrapper>
+      <TableCol>
+        <TableData />
+        {Object.values(Slots).map((slot, key) => (
+          <TableData>
+            <Text>{slot}</Text>
+          </TableData>
+        ))}
+      </TableCol>
+      {raidMembers.map((raidMember, key) => (
+        <TableCol>
+          <TableData>
+            <Text>{raidMember.name}</Text>
+          </TableData>
+          <TableData>
+            <Text>{raidMember.role}</Text>
+          </TableData>
 
-        {weapon.map((val, key) => {
-          return (
-            <tr>
-              <td>{val.gear}</td>
-              <td>{val.mt}</td>
-              <td>{val.ot}</td>
-              <td>{val.h1}</td>
-              <td>{val.h2}</td>
-              <td>{val.d1}</td>
-              <td>{val.d2}</td>
-              <td>{val.d3}</td>
-              <td>{val.d4}</td>
-            </tr>
-          );
-        })}
-        {leftside.map((val, key) => {
-          return (
-            <tr>
-              <td>{val.gear}</td>
-              <td>{val.mt}</td>
-              <td>{val.ot}</td>
-              <td>{val.h1}</td>
-              <td>{val.h2}</td>
-              <td>{val.d1}</td>
-              <td>{val.d2}</td>
-              <td>{val.d3}</td>
-              <td>{val.d4}</td>
-            </tr>
-          );
-        })}
-        {rightside.map((val, key) => {
-          return (
-            <tr>
-              <td>{val.gear}</td>
-              <td>{val.mt}</td>
-              <td>{val.ot}</td>
-              <td>{val.h1}</td>
-              <td>{val.h2}</td>
-              <td>{val.d1}</td>
-              <td>{val.d2}</td>
-              <td>{val.d3}</td>
-              <td>{val.d4}</td>
-            </tr>
-          );
-        })}
-      </table>
-    </div>
+          {Object.values(raidMember.equip).map((key, index) => (
+            <TableCol>
+              <TableData>
+                <Text>{key.name}</Text>
+              </TableData>
+            </TableCol>
+          ))}
+        </TableCol>
+      ))}
+    </TableWrapper>
   );
 };
+
+const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const TableCol = styled.div`
+  width: 150px;
+  flex-direction: column;
+`;
+
+const TableData = styled.div`
+  min-height: 80px;
+`;
+
+const Text = styled.p`
+  font-size: 12pt;
+`;

@@ -19,7 +19,6 @@ export const jobsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllJobs.fulfilled, (state, action) => {
       const data = action.payload;
-      console.log("fetchAllJobs", action.payload);
       state.data = data;
     });
     builder.addCase(fetchAllJobs.pending, baseSliceLoadingReducer);
