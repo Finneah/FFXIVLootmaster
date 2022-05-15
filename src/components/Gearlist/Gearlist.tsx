@@ -61,20 +61,18 @@ export const Gearlist = () => {
     <TableWrapper>
       <TableCol>
         <TableData />
-        {Object.values(Slots).map((slot, key) => (
-          <TableData>
+        {Object.values(Slots).map((slot, index) => (
+          <TableData key={index.toString()}>
             <Text>{slot}</Text>
           </TableData>
         ))}
       </TableCol>
-      {raidMembers.map((raidMember, key) => (
-        <TableCol>
+      {raidMembers.map((raidMember, index) => (
+        <TableCol key={index.toString()}>
           <TableData>
             <Button
               text={raidMember.name}
-              onClick={(raidMember: RaidMember) => {
-                console.log(raidMember);
-
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 onSelectRaidMember(raidMember);
               }}
             />
@@ -84,7 +82,7 @@ export const Gearlist = () => {
           </TableData>
 
           {Object.values(raidMember.equip).map((key, index) => (
-            <TableCol>
+            <TableCol key={index.toString()}>
               <TableData>
                 <Text>{key.name}</Text>
               </TableData>

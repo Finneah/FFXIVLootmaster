@@ -17,7 +17,6 @@ export const RaidMemberGearPopUp = ({
    * Name
    *
    */
-  console.log("raidmember", raidMember);
 
   return (
     <div className="popup">
