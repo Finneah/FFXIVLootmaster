@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Button/Button";
-import { weapons } from "../../data/gear";
+import { weapons } from "../../redux/gear";
 
 export const ExamplePage: React.FunctionComponent = () => {
   const [exampleText, setExampleText] = useState("hallo dude");

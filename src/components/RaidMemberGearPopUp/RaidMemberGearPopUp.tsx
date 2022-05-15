@@ -1,4 +1,4 @@
-import { RaidMember } from "../../types/User";
+import { RaidMember } from "../../types/RaidMember";
 import { SelectGearForm } from "../SelectGearForm/SelectGearForm";
 import "./RaidMemberGearPopUp.css";
 

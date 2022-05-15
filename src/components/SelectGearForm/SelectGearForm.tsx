@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import styled from "styled-components";
-import { weapons } from "../../data/gear";
-import { RaidMember } from "../../types/User";
+import { weapons } from "../../redux/gear";
+import { RaidMember } from "../../types/RaidMember";
 
 type SelectGearFormProps = {
   onSave: (raidMemberFormData: RaidMember) => void;
@@ -16,7 +16,7 @@ export const SelectGearForm = ({
   onSave,
 }: SelectGearFormProps) => {
   const { register, control, handleSubmit } = useForm();
-
+// TODO Jenni FormType definieren, defaultValue reparieren
   const onSubmit = (data: any) => {
     const updatedMember = { ...raidMember };
     updatedMember.equip.waffe.name = data.waffe.value;
@@ -38,13 +38,14 @@ export const SelectGearForm = ({
         <SelectWrapper>
           <label htmlFor="waffe">Waffe</label>
           <Controller
-            name="waffe" // Slots.WAFFE
+            name="waffe" // TODO Slots.WAFFE
             control={control}
             render={({ field }) => (
               <Select {...field} options={options} isMulti={false} />
             )}
           />
         </SelectWrapper>
+        {/** TODO Form erweitern */}
         {/* 
         <div>
           <label htmlFor="lastName">Last Name</label>

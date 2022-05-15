@@ -1,41 +1,37 @@
 import { useEffect, useState } from "react";
-import { raidMember as defaultRaidMember } from "../../data/raidMember";
+import { raidMember as defaultRaidMember } from "../../redux/raidMember";
 import { Slots } from "../../types/Gear";
 import styled from "styled-components";
-import { RaidMember } from "../../types/User";
+import { RaidMember } from "../../types/RaidMember";
 import { Button } from "../Button/Button";
 import { RaidMemberGearPopUp } from "../RaidMemberGearPopUp/RaidMemberGearPopUp";
-
+import { useSelector } from "react-redux";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { fetchAllJobs } from "../../redux/jobs/jobs.actions";
+import { RootState } from "../../redux/root/root.types";
+import { ClassJob } from "../../types/Job";
+/**
+ * FUNKTIONEN
+ * Schreibweise = const foo =()=>{}
+ * Eine Funktion tut nur EINE Sache
+ * Eine Funktion heist nachdem was sie tut
+ */
 export const Gearlist = () => {
-  // const classJobs: (ClassJob | undefined)[] = useSelector(
-  //   (state: RootState) => state.jobs.data
-  // );
-
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchAllJobs());
-  // }, []);
-
-  // const ClassJobList = () => {
-  //   console.log("classJobs", classJobs);
-  //   if (!classJobs || classJobs.length === 0) {
-  //     return null;
-  //   }
-  //   return (
-  //     <ListGroup>
-  //       {classJobs.map((classJob, key) => (
-  //         <ListGroup.Item>{classJob?.shortName} </ListGroup.Item>
-  //       ))}
-  //     </ListGroup>
-  //   );
-  // };
-
+  /** PROPS */
+  /** STATE */
   const [raidMembers, setRaidMembers] =
     useState<RaidMember[]>(defaultRaidMember);
-
   const [isVisible, setIsVisible] = useState(false);
-
   const [selectedRaidMember, setSelectedRaidMember] = useState<RaidMember>();
+
+  /** HOOKS */
+  //reagiert wenn komponente geladen wird oder selectedRaidMember sich ändert
+
+  /** HANDLER*/
+  const resetSelectedAndClosePopUp = () => {
+    setIsVisible(false);
+    setSelectedRaidMember(undefined);
+  };
 
   const onSelectRaidMember = (raidMember: RaidMember) => {
     // setze ausgewählten raidmember
@@ -43,76 +39,67 @@ export const Gearlist = () => {
     // raidmember gesetzt? öffne popup
   };
 
-  //reagiert wenn komponente geladen wird oder selectedRaidMember sich ändert
-  useEffect(() => {
-    setIsVisible(true);
-  }, [selectedRaidMember]);
-  const closePopUp = () => {
-    setIsVisible(false);
-    setSelectedRaidMember(undefined);
-  };
-  // Name Header soll ein Click event werden
-  // Es soll sich ein PopUp öffnen indem die Auswahl an Gear eingetragen wird
-  // Mit einem Button "speichern" werden die Daten in die Tabele eingetragen
   // TODO specihern im Localstorage
 
   // TODO Table in Component Auslagern
-
+  // TODO um die Table muss eine "View" (div) das den ganzen Screen darstellt
+  //** VIEW FUNCTIONS */
   return (
-    <TableWrapper>
-      <TableCol>
-        <TableData />
-        {Object.values(Slots).map((slot, index) => (
-          <TableData key={index.toString()}>
-            <Text>{slot}</Text>
-          </TableData>
-        ))}
-      </TableCol>
-      {raidMembers.map((raidMember, index) => (
-        <TableCol key={index.toString()}>
-          <TableData>
-            <Button
-              text={raidMember.name}
-              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                onSelectRaidMember(raidMember);
-              }}
-            />
-          </TableData>
-          {/* <TableData>
-            <Text>{raidMember.role}</Text>
-          </TableData> */}
-
-          {Object.values(raidMember.equip).map((key, index) => (
-            <TableCol key={index.toString()}>
-              <TableData>
-                <Text>{key.name}</Text>
-              </TableData>
-            </TableCol>
+    <>
+      <TableWrapper>
+        <TableCol>
+          {/**Eigene Komponente Header */}
+          <TableData />
+          {Object.values(Slots).map((slot, index) => (
+            <TableData key={index.toString()}>
+              <Text>{slot}</Text>
+            </TableData>
           ))}
         </TableCol>
-      ))}
 
-      {isVisible && selectedRaidMember && (
-        <RaidMemberGearPopUp
-          raidMember={selectedRaidMember}
-          onClose={closePopUp}
-          onSave={(data: RaidMember) => {
-            const findRaidMembers = [...raidMembers];
+        {raidMembers.map((raidMember, index) => (
+          <TableCol key={index.toString()}>
+            {/**Eigene Komponente RaidMemberCol */}
+            <TableData>
+              <Button
+                text={raidMember.name}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  onSelectRaidMember(raidMember);
+                }}
+              />
+            </TableData>
+            {Object.values(raidMember.equip).map((key, index) => (
+              <TableCol key={index.toString()}>
+                <TableData>
+                  <Text>{key.name}</Text>
+                </TableData>
+              </TableCol>
+            ))}
+          </TableCol>
+        ))}
 
-            if (findRaidMembers) {
-              findRaidMembers.find((raidMember) => {
-                if (raidMember.name === data.name) {
-                  raidMember = data;
-                }
-                return raidMember.name === data.name;
-              });
-              setRaidMembers(findRaidMembers);
-              closePopUp();
-            }
-          }} // function auslagern
-        />
-      )}
-    </TableWrapper>
+        {isVisible && selectedRaidMember && (
+          <RaidMemberGearPopUp
+            raidMember={selectedRaidMember}
+            onClose={resetSelectedAndClosePopUp}
+            onSave={(data: RaidMember) => {
+              const findRaidMembers = [...raidMembers];
+
+              if (findRaidMembers) {
+                findRaidMembers.find((raidMember) => {
+                  if (raidMember.name === data.name) {
+                    raidMember = data;
+                  }
+                  return raidMember.name === data.name;
+                });
+                setRaidMembers(findRaidMembers);
+                resetSelectedAndClosePopUp();
+              }
+            }} // function auslagern wie close PopUp
+          />
+        )}
+      </TableWrapper>
+    </>
   );
 };
 

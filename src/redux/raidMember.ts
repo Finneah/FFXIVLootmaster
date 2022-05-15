@@ -1,5 +1,5 @@
 import { GearSourceEnum } from "../types/Gear";
-import { Roles, RaidMember } from "../types/User";
+import { Roles, RaidMember } from "../types/RaidMember";
 const spencer: RaidMember = {
   name: "Spencer",
   role: Roles.MT,

@@ -8,6 +8,7 @@ export const fetchAllJobs = createAsyncThunk("jobs/fetchAllJobs", async () => {
   let url = "https://xivapi.com/ClassJob" + "?private_key=" + privateKey;
   let response = axios.get(url).then((response) => {
     // return response.data;
+    console.log(response.data)
     return mockJobs;
   });
 
