@@ -1,12 +1,11 @@
-import { constants } from "buffer";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Select from "react-select/dist/declarations/src/Select";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { fetchAllJobs } from "../../redux/jobs/jobs.actions";
-import { ClassJob } from "../../redux/jobs/jobs.types";
+
 import { RootState } from "../../redux/root/root.types";
+import { ClassJob } from "../../types/Job";
 import "./Gearlist.css";
 import { WeaponSelect, LeftSideSelect, RightSideSelect } from "./Gearselect";
 
